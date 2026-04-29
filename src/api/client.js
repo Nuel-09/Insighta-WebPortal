@@ -24,21 +24,34 @@ export async function refreshCsrf() {
 }
 
 export async function apiGet(path) {
-  const r = await fetch(`${getApiBase()}${path}`, {
-    credentials: "include",
-    headers: {
-      "X-API-Version": "1",
-      Accept: "application/json"
-    }
-  });
-  const text = await r.text();
-  let body;
   try {
-    body = text ? JSON.parse(text) : {};
-  } catch {
-    body = { message: text };
+    const r = await fetch(`${getApiBase()}${path}`, {
+      credentials: "include",
+      headers: {
+        "X-API-Version": "1",
+        Accept: "application/json"
+      }
+    });
+    const text = await r.text();
+    let body;
+    try {
+      body = text ? JSON.parse(text) : {};
+    } catch {
+      body = { message: text };
+    }
+    return { ok: r.ok, status: r.status, body };
+  } catch (e) {
+    return {
+      ok: false,
+      status: 0,
+      body: {
+        message:
+          e instanceof TypeError
+            ? "Network or CORS error — check VITE_API_URL and backend WEB_ORIGIN match this site."
+            : String(e?.message || e)
+      }
+    };
   }
-  return { ok: r.ok, status: r.status, body };
 }
 
 export async function apiPost(path, jsonBody, needCsrf = true) {

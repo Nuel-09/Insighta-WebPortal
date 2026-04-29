@@ -14,18 +14,23 @@ function useSession() {
 
   const reload = async () => {
     setLoading(true);
-    const { ok, body } = await apiGet("/api/me");
-    if (ok && body?.data) {
-      try {
-        await refreshCsrf();
-      } catch {
-        /* ignore */
+    try {
+      const { ok, body } = await apiGet("/api/me");
+      if (ok && body?.data) {
+        try {
+          await refreshCsrf();
+        } catch {
+          /* ignore */
+        }
+        setUser(body.data);
+      } else {
+        setUser(null);
       }
-      setUser(body.data);
-    } else {
+    } catch {
       setUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
