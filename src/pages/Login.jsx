@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { apiGet, getApiBase } from "../api/client.js";
+import { apiGet, getGithubAuthUrl } from "../api/client.js";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function Login() {
   }, [navigate]);
 
   const startGithub = () => {
-    window.location.href = `${getApiBase()}/auth/github`;
+    window.location.href = getGithubAuthUrl();
   };
 
   return (

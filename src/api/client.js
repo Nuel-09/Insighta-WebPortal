@@ -1,5 +1,3 @@
-const API = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
 const apiHeaders = () => ({
   "X-API-Version": "1",
   Accept: "application/json",
@@ -8,8 +6,23 @@ const apiHeaders = () => ({
 
 let csrfToken = null;
 
+/**
+ * API origin only (scheme + host [+ port]). Strips any accidental path in
+ * VITE_API_URL so we never request /auth/github/<wrong-segment>.
+ */
 export function getApiBase() {
-  return API.replace(/\/$/, "");
+  const raw = String(import.meta.env.VITE_API_URL || "http://localhost:3000").trim();
+  try {
+    const withProto = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+    return new URL(withProto).origin;
+  } catch {
+    return raw.replace(/\/$/, "");
+  }
+}
+
+/** Exact OAuth start URL — always /auth/github on the API host (no extra path segments). */
+export function getGithubAuthUrl() {
+  return new URL("/auth/github", `${getApiBase()}/`).href;
 }
 
 /** Double-submit CSRF for cookie-based requests (TRD). Call before unsafe methods. */
