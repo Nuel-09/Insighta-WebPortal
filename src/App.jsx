@@ -8,6 +8,7 @@ import ProfileDetail from "./pages/ProfileDetail.jsx";
 import Search from "./pages/Search.jsx";
 import Account from "./pages/Account.jsx";
 
+// Loads the cookie-backed session and keeps user state for route guards.
 function useSession() {
   const [user, setUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -63,6 +64,7 @@ export default function App() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    // Backend clears refresh/access cookies and revokes the refresh token.
     await apiPost("/auth/logout", {});
     setUser(null);
     navigate("/login", { replace: true });

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { apiGet, getGithubAuthUrl } from "../api/client.js";
 
+// Login page only starts OAuth; token cookies are set server-side on callback.
 export default function Login() {
   const navigate = useNavigate();
 
