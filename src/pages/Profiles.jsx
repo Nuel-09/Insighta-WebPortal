@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiGet } from "../api/client.js";
 
+// List page mirrors API filters so demoed behavior matches CLI/API exactly.
 export default function Profiles() {
   const [data, setData] = useState(null);
   const [filters, setFilters] = useState({
@@ -34,6 +35,7 @@ export default function Profiles() {
   };
 
   const followLink = async (href) => {
+    // Pagination links from backend are treated as source of truth.
     if (!href) return;
     const withQuery = href.startsWith("http")
       ? new URL(href).pathname + new URL(href).search

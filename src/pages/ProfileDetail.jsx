@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { apiGet, apiDelete, refreshCsrf } from "../api/client.js";
 
+// Detail view also fetches /api/me to decide whether admin actions are shown.
 export default function ProfileDetail() {
   const { id } = useParams();
   const [p, setP] = useState(null);
