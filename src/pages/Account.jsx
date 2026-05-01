@@ -1,5 +1,6 @@
 import { apiPost, refreshCsrf } from "../api/client.js";
 
+// Account page exposes session role and manual refresh rotation for demos.
 export default function Account({ user, onSession }) {
   const isAdmin = user?.role === "admin";
 

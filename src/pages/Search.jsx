@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiGet } from "../api/client.js";
 
+// Mirrors backend rule-based NL search endpoint and displays matching records.
 export default function Search() {
   const [q, setQ] = useState("young males from nigeria");
   const [data, setData] = useState(null);
